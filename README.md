@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Svelte library
 
 Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
@@ -63,3 +64,7 @@ To publish your library to [npm](https://www.npmjs.com):
 ```sh
 npm publish
 ```
+=======
+# Friet-app
+Werken met svelte aan een friet-app
+>>>>>>> 607c184f1d78406c440d9800193751e4731d520b
