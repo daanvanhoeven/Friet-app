@@ -1,39 +1,31 @@
 <script>
-	import './+layout.svelte';
+	import { onMount } from 'svelte';
+	import QrCode from 'svelte-qrcode';
 
-	/**
-	 * Importeert de functie addBestelling uit bestellingen.js
-	 * Deze functie voegt een bestelling toe of verhoogt het aantal
-	 * als dezelfde snack en friet al bestaan.
-	 */
-	import { addBestelling } from './lib/bestellingen.js';
-
-	/** @type {object[]} lijst met alle bestellingen */
 	let bestellingen = [];
 
-	/** @type {Object} samenvatting van alle producten */
-	let samenvatting = {};
-
-	/** @type {string} gekozen snack */
-	let snackInput = '';
-
-	/** @type {string} naam van de persoon die bestelt */
 	let naamInput = '';
-
-	/** @type {string} gekozen friet */
+	let snackInput = '';
 	let frietInput = '';
+	let broodjeInput = '';
+	let sausInput = '';
 
-	/**
-	 * Lijst met beschikbare snacks
-	 * @type {string[]}
-	 */
 	let snacks = [
 		'Bamischijf Pittig',
+		'Kroket',
 		'Gehaktstaaf',
 		'Kipkorn',
+		'Frikandel',
+		'Kaassouffle',
+		'Knakworst',
+		'Bami-schijf',
+		'Nasi-schijf',
+		'Lihanboutje',
+		'Ham/kaasouffle',
 		'Viandelle',
 		'Bal Gehakt (frituur)',
-		'Goulash- of Satékroket',
+		'Goulashkroket ',
+		'Satékroket',
 		'Groentekroket',
 		'Kaaskroket',
 		'Kalfs- of Dobben Kroket',
@@ -52,111 +44,236 @@
 		'Kipcornwrap',
 		'Mexicano wrap'
 	];
-
-	/**
-	 * Lijst met friet opties
-	 * @type {string[]}
-	 */
 	let friet = ['Friet', 'Friet met mayonaise', 'Friet speciaal', 'Friet oorlog'];
 
-	/**
-	 * Voegt een bestelling toe aan de lijst
-	 */
-	function toevoegen() {
-		bestellingen = addBestelling(bestellingen, naamInput, snackInput, frietInput);
+	let broodjes = [
+		'hard bruin broodje gezond vega',
+		'hard wit broodje gezond',
+		'Broodje kroket',
+		'Broodje frikandel'
+	];
 
-		// invoervelden leeg maken
+
+	let sauzen = ['Mayonaise', 'Ketchup', 'Curry'];
+
+
+	async function refresh() {
+		const res = await fetch('/api/bestellingen');
+		bestellingen = await res.json();
+	}
+
+	async function toevoegen() {
+	
+		if (naamInput.trim() === '') {
+			return;
+		}
+
+		
+		if (!snackInput && !frietInput && !broodjeInput) {
+			return;
+		}
+
+		await fetch('/api/bestellingen', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				naam: naamInput,
+				snack: snackInput,
+				friet: frietInput,
+				broodje: broodjeInput,
+				saus: sausInput
+			})
+		});
+
+	
 		naamInput = '';
 		snackInput = '';
 		frietInput = '';
+		broodjeInput = '';
+		sausInput = '';
+		refresh();
 	}
 
-	/**
-	 * Verwijdert een bestelling uit de lijst
-	 * @param {number} index - positie van de bestelling
-	 */
-	function verwijderBestelling(index) {
-		bestellingen.splice(index, 1);
-		bestellingen = bestellingen;
+	async function verwijderBestelling(id) {
+		await fetch('/api/bestellingen', {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ id })
+		});
+
+		refresh();
 	}
 
-	/**
-	 * Reactieve variabele in Svelte
-	 * telt automatisch het aantal bestellingen
-	 */
+	onMount(() => {
+		refresh();
+		setInterval(refresh, 1000);
+	});
+
+
 	$: totaal = bestellingen.length;
 
-	/**
-	 * Reactieve samenvatting van alle producten
-	 * snacks en friet worden bij elkaar opgeteld
-	 */
+	
+	let samenvattingFriet = {};
+	let samenvattingSnacks = {};
+	let samenvattingBroodjes = {};
+	let samenvattingSauzen = {};
+
 	$: {
-		samenvatting = {};
+		samenvattingFriet = {};
+		samenvattingSnacks = {};
+		samenvattingBroodjes = {};
+		samenvattingSauzen = {};
 
-		for (let bestelling of bestellingen) {
-			// snack optellen
-			if (bestelling.snack) {
-				if (!samenvatting[bestelling.snack]) {
-					samenvatting[bestelling.snack] = 0;
-				}
-
-				samenvatting[bestelling.snack] += bestelling.aantal;
+		for (let b of bestellingen) {
+			if (b.friet) {
+				if (!samenvattingFriet[b.friet]) samenvattingFriet[b.friet] = 0;
+				samenvattingFriet[b.friet] += b.aantal;
 			}
 
-			// friet optellen
-			if (bestelling.friet) {
-				if (!samenvatting[bestelling.friet]) {
-					samenvatting[bestelling.friet] = 0;
+			if (b.snack) {
+				let key = b.snack;
+
+				if (b.saus) {
+					key += ' met ' + b.saus;
 				}
 
-				samenvatting[bestelling.friet] += bestelling.aantal;
+				if (!samenvattingSnacks[key]) samenvattingSnacks[key] = 0;
+
+				samenvattingSnacks[key] += b.aantal;
+			}
+
+			if (b.broodje) {
+				if (!samenvattingBroodjes[b.broodje]) samenvattingBroodjes[b.broodje] = 0;
+				samenvattingBroodjes[b.broodje] += b.aantal;
 			}
 		}
 	}
 </script>
 
-<div class="Title">
-	<h1>Wat wil je bestellen?</h1>
-</div>
+<h1 class="my-6 text-center text-2xl font-semibold">Wat wil je bestellen?</h1>
 
-<div class="snacktext">
-	<input bind:value={naamInput} placeholder="naam" />
+<div class="mx-auto grid max-w-5xl gap-5 p-4 md:grid-cols-3">
+	<div class="rounded-lg bg-white p-5 shadow-sm md:col-span-2">
+		<h2 class="mb-3 font-semibold">Bestellen</h2>
 
-	<select bind:value={snackInput}>
-		<option value="">Kies een snack</option>
+		<input class="mb-3 w-full" bind:value={naamInput} placeholder="Naam" />
 
-		{#each snacks as snack}
-			<option value={snack}>{snack}</option>
+		<div class="grid gap-2 md:grid-cols-2">
+			<select bind:value={snackInput}>
+				<option value="">Kies een snack</option>
+				{#each snacks as s}
+					<option value={s}>{s}</option>
+				{/each}
+			</select>
+
+			<select bind:value={sausInput}>
+				<option value="">Saus voor snack </option>
+
+				{#each sauzen as s}
+					<option value={s}>{s}</option>
+				{/each}
+			</select>
+
+			<select bind:value={frietInput}>
+				<option value="">Kies een frietje</option>
+				{#each friet as f}
+					<option value={f}>{f}</option>
+				{/each}
+			</select>
+
+			<select bind:value={broodjeInput}>
+				<option value="">Kies een broodje</option>
+				{#each broodjes as b}
+					<option value={b}>{b}</option>
+				{/each}
+			</select>
+		</div>
+
+		<button
+			class="mt-4 w-full rounded bg-gray-800 py-2 text-white hover:bg-gray-700"
+			on:click={toevoegen}
+		>
+			Toevoegen
+		</button>
+
+		<h2 class="mt-6 font-semibold">Bestellingen</h2>
+
+		{#each bestellingen as b}
+			<div class="mt-2 flex items-center justify-between rounded bg-gray-100 p-3">
+				<span class="text-sm">
+					<p>
+						{b.naam.join(' en ')} - {b.aantal}x
+
+						{#if b.snack}
+							{b.snack}{#if b.saus}
+								{' '} met {b.saus}{/if}
+						{/if}
+
+						{#if b.broodje}
+							{#if b.snack}
+								en
+							{/if}
+							{b.broodje}
+						{/if}
+
+						{#if b.friet}
+							{#if b.snack || b.broodje}
+								en
+							{/if}
+							{b.friet}
+						{/if}
+					</p>
+				</span>
+
+				<button
+					class="rounded bg-red-400 px-2 py-1 text-sm text-white hover:bg-red-500"
+					on:click={() => verwijderBestelling(b.id)}
+				>
+					X
+				</button>
+			</div>
 		{/each}
-	</select>
+	</div>
 
-	<select bind:value={frietInput}>
-		<option value="">Kies friet</option>
+	<!-- RECHTS -->
+	<div class="h-fit rounded-lg bg-white p-5 shadow-sm">
+		<h2 class="mb-3 font-semibold">Totale bestelling</h2>
 
-		{#each friet as friets}
-			<option value={friets}>{friets}</option>
-		{/each}
-	</select>
+		<div class="mb-3">
+			<h3 class="text-sm font-medium text-gray-600">Friet</h3>
+			<ul class="text-sm">
+				{#each Object.entries(samenvattingFriet) as [product, aantal]}
+					<li>{aantal}x {product}</li>
+				{/each}
+			</ul>
+		</div>
 
-	<button on:click={toevoegen}>toevoegen</button>
+		<div class="mb-3">
+			<h3 class="text-sm font-medium text-gray-600">Snacks</h3>
+			<ul class="text-sm">
+				{#each Object.entries(samenvattingSnacks) as [product, aantal]}
+					<li>{aantal}x {product}</li>
+				{/each}
+			</ul>
+		</div>
 
-	<h2>Bestellingen</h2>
+		<div class="mb-3">
+			<h3 class="text-sm font-medium text-gray-600">Broodjes</h3>
+			<ul class="text-sm">
+				{#each Object.entries(samenvattingBroodjes) as [product, aantal]}
+					<li>{aantal}x {product}</li>
+				{/each}
+			</ul>
+		</div>
 
-	{#each bestellingen as bestelling, index}
-		<p>
-			{bestelling.naam.join(' en ')} - {bestelling.aantal}x {bestelling.snack} en {bestelling.friet}
+		<div class="h-fit rounded-lg bg-gray-300 p-5 shadow-sm">
+			<p class="mb-2 text-sm text-black">Scan om te bestellen op de telefoon</p>
 
-			<button on:click={() => verwijderBestelling(index)}>verwijder</button>
+			<QrCode value=" http://192.168.255.216:5173/" size={150} />
+		</div>
+
+		<p class="mt-4 text-xs text-gray-500">
+			{totaal} bestelling(en)
 		</p>
-	{/each}
-
-	<p>je hebt {totaal} bestelling(en)</p>
-
-	<h2>Totale bestelling</h2>
-
-	<ul>
-		{#each Object.entries(samenvatting).sort() as [product, aantal]}
-			<li>{aantal}x {product}</li>
-		{/each}
-	</ul>
+	</div>
 </div>
