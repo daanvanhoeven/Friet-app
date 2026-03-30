@@ -1,0 +1,12 @@
+{
+	"naam": "Daan",
+	"bestelling": {
+		"broodje": {
+			"naam": "Hard bruin broodje gezond Vega",
+			"beleg": "gezond",
+			"hardOfZacht": "hard",
+			"witOfBruin": "bruin",
+			"vega": true
+		}
+	}
+}

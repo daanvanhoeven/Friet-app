@@ -1,50 +1,79 @@
-let bestellingen = [];
+import { getBroodjeId } from '$lib/data/alles.js';
+import { getFrietId } from '$lib/data/alles';
+import { getSnackId } from '$lib/data/alles';
 
 /**
- * Haal alle bestellingen op
+ * @typedef {import('$lib/data/typedef').BestelItem} BestelItem
  */
+
+/**
+ * @typedef {Object} BestellingMetId
+ * @property {number} id
+ * @property {string} naam
+ * @property {BestelItem} bestelling
+ */
+
+/** @type {BestellingMetId[]} */
+let bestellingen = [];
+
 export function getBestellingen() {
 	return bestellingen;
 }
 
 /**
+ * Voeg een bestelling toe aan de lijst met bestellingen
  *
+ * @param {{ naam: string, bestelling: BestelItem}} bestelItem
+ *
+ * @returns {{ ok?: true, error?: string }}
  */
-export function addBestelling(data) {
-	const naamInput = data.naam;
+export function voegBestellingToe({ naam, bestelling }) {
+	if (!naam) {
+		return { error: 'Ongeldige naam' };
+	}
 
-	let gevondenIndex = -1;
+	if (!bestelling) {
+		return { error: 'Ongeldige bestelling' };
+	}
 
-	for (let i = 0; i < bestellingen.length; i++) {
-		if (
-			bestellingen[i].snack === data.snack &&
-			bestellingen[i].friet === data.friet &&
-			bestellingen[i].broodje === data.broodje &&
-			bestellingen[i].saus === data.saus
-		) {
-			gevondenIndex = i;
+	const { friet, snack, broodje } = bestelling;
+
+
+	if (broodje) {
+		const id = getBroodjeId(broodje);
+
+		if (id === -1) {
+			return { error: 'Ongeldig broodje' };
 		}
+
+		broodje.id = id;
 	}
 
-	if (gevondenIndex !== -1) {
-		bestellingen[gevondenIndex].naam.push(naamInput);
-		bestellingen[gevondenIndex].aantal++;
-	} else {
-		bestellingen.push({
-			id: Date.now(),
-			naam: [data.naam],
-			snack: data.snack,
-			friet: data.friet,
-			broodje: data.broodje,
-			saus: data.saus,
-			aantal: 1
-		});
+	
+	if (friet) {
+		const id = getFrietId(friet);
+		if (id === -1) return { error: 'Ongeldige friet' };
+		friet.id = id;
 	}
+
+
+	if (snack) {
+		const id = getSnackId(snack);
+		if (id === -1) return { error: 'Ongeldige snack' };
+		snack.id = id;
+	}
+
+	bestellingen.push({
+		id: Date.now(),
+		naam,
+		bestelling
+	});
+
+	console.log('bestellingen', bestellingen);
+
+	return { ok: true };
 }
 
-/**
- * Verwijderen
- */
 export function deleteBestelling(id) {
 	bestellingen = bestellingen.filter((b) => b.id !== id);
 }

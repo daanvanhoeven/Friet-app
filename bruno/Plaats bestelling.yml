@@ -1,0 +1,30 @@
+info:
+  name: Plaats bestelling
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:5173/api/bestel-overzicht
+  body:
+    type: json
+    data: |-
+      {
+        "naam": "Jens",
+        "bestelling": {
+          "broodje": { 
+            "naam": "Hard bruin broodje gezond Vega",
+            "beleg": "gezond",
+            "hardOfZacht": "hard",
+            "witOfBruin": "bruin",
+            "vega": true
+          }
+        }  
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,18 @@
+info:
+  name: Bekijk alle bestellingen
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:5173/api/bestel-overzicht
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
