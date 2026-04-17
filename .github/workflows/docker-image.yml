@@ -17,8 +17,8 @@ jobs:
       with:
         node-version: '22'
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
     - name: Build application
-      run: pnpm run build
+      run: npm run build
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
