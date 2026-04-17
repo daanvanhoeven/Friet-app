@@ -4,78 +4,104 @@
 	let bestaandeCode = '';
 	let error = '';
 
-	// Genereer random code
+	// Genereer een random 6-letter code voor een bestelling
 	function genereerCode() {
 		const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 		let code = '';
-
 		for (let i = 0; i < 6; i++) {
 			code += chars[Math.floor(Math.random() * chars.length)];
 		}
-
 		return code;
 	}
 
-	// Ga naar bestaande bestelling
-	function gaNaarBestelling() {
+	async function gaNaarBestelling() {
 		if (!bestaandeCode.trim()) {
-			error = 'Vul een code in';
+			error = 'Vul eerst een code in';
 			return;
 		}
 
-		error = '';
+		const code = bestaandeCode.toLowerCase().trim();
 
-		goto(`/bestellen?code=${bestaandeCode}`);
+		const res = await fetch(`/api/bestel-overzicht?code=${code}`);
+		const data = await res.json();
+
+		if (!data.error) {
+			goto(`/bestellen?code=${code}`);
+		} else {
+			error = 'Deze code bestaat niet';
+		}
 	}
-
-	// Maak nieuwe bestelling
-	function maakNieuweBestelling() {
+	// Maak een nieuwe lijst aan en stuur de gebruiker door
+	async function maakNieuweBestelling() {
 		const nieuweCode = genereerCode();
+
+		await fetch('/api/bestel-overzicht', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ code: nieuweCode })
+		});
 
 		goto(`/bestellen?code=${nieuweCode}`);
 	}
 </script>
 
-<div class="flex min-h-screen items-center justify-center bg-gray-100">
-	<div class="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
-		<h1 class="mb-6 text-center text-2xl font-semibold">Welkom bij de Snackbar bestel app</h1>
+<div class="flex min-h-screen flex-col items-center justify-start bg-gray-50 p-6 pt-12 md:pt-24">
+	<div class="w-full max-w-sm">
+		<div class="mb-10 text-center">
+			<div>
+				<span class="text-3xl"></span>
+			</div>
 
-		<!-- Bestaande bestelling -->
-		<div class="mb-6">
-			<h2 class="mb-2 font-semibold">Bestaande bestelling openen</h2>
-
-			<input
-				class="mb-2 w-full rounded border p-2"
-				placeholder="Voer code in"
-				bind:value={bestaandeCode}
-			/>
-
-			<button
-				class="w-full rounded bg-blue-500 py-2 text-white hover:bg-blue-600"
-				on:click={gaNaarBestelling}
-			>
-				Ga naar bestelling
-			</button>
-
-			{#if error}
-				<p class="mt-2 text-sm text-red-500">
-					{error}
-				</p>
-			{/if}
+			<h1 class="text-2xl font-extrabold text-gray-900">Snackbar Groep</h1>
 		</div>
 
-		<hr class="my-6" />
+		<div class="mb-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+			<h2 class="mb-4 text-center text-sm font-bold tracking-wider text-gray-700 uppercase">
+				Meedoen met een bestelling
+			</h2>
 
-		<!-- Nieuwe bestelling -->
-		<div>
-			<h2 class="mb-2 font-semibold">Nieuwe bestelling maken</h2>
+			<div class="space-y-4">
+				<input
+					class="w-full rounded-xl border-2 border-gray-200 bg-gray-50 p-4 text-center text-xl font-bold text-gray-900
+					uppercase transition-all focus:border-blue-500 focus:bg-white focus:outline-none"
+					placeholder="CODE"
+					bind:value={bestaandeCode}
+				/>
 
+				<button
+					class="w-full rounded-xl bg-blue-600 py-4 font-bold text-white shadow-md transition-all hover:bg-blue-700 active:scale-[0.98]"
+					on:click={gaNaarBestelling}
+				>
+					Ga naaar bestelling
+				</button>
+
+				{#if error}
+					<p class="text-center text-sm font-bold text-red-600">
+						{error}
+					</p>
+				{/if}
+			</div>
+		</div>
+
+		<div class="mb-8 flex items-center gap-4">
+			<div class="h-px flex-1 bg-gray-300"></div>
+
+			<span class="text-xs font-bold text-gray-600 uppercase"> Of </span>
+
+			<div class="h-px flex-1 bg-gray-300"></div>
+		</div>
+
+		<div class="text-center">
 			<button
-				class="w-full rounded bg-green-500 py-2 text-white hover:bg-green-600"
+				class="w-full rounded-xl border-2 border-gray-200 bg-white font-semibold text-gray-900 transition-all hover:bg-green-50 active:scale-[0.98]"
 				on:click={maakNieuweBestelling}
 			>
-				 Nieuwe bestelling starten
+				Nieuwe bestelling starten
 			</button>
+
+			<p class="mt-4 px-4 text-[11px] leading-relaxed text-gray-600">
+				Maak een lijst aan, voeg snacks toe en laat anderen meebestellen via een QR-code.
+			</p>
 		</div>
 	</div>
 </div>

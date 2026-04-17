@@ -20,7 +20,7 @@ export const BROODJES = [
 		witOfBruin: 'wit',
 		vega: true
 	},
-	
+
 	{
 		id: 3,
 		naam: 'Wit broodje kroket',
@@ -52,7 +52,56 @@ export const BROODJES = [
 		hardOfZacht: 'zacht',
 		witOfBruin: 'wit',
 		vega: false
-	}
+	},
+	{
+		id: 7,
+		naam: 'Zacht wit broodje gezond',
+		beleg: 'gezond',
+		hardOfZacht: 'zacht',
+		witOfBruin: 'wit',
+		vega: false
+	},
+	{
+		id: 8,
+		naam: 'Zacht wit broodje gezond vega',
+		beleg: 'gezond',
+		hardOfZacht: 'zacht',
+		witOfBruin: 'wit',
+		vega: true
+	},
+	{
+		id: 9,
+		naam: 'Hard bruin broodje gezond',
+		beleg: 'gezond',
+		hardOfZacht: 'hard',
+		witOfBruin: 'bruin',
+		vega: false
+	},
+	{
+		id: 10,
+		naam: 'Hard wit broodje gezond',
+		beleg: 'gezond',
+		hardOfZacht: 'hard',
+		witOfBruin: 'wit',
+		vega: false
+	},
+	{
+		id: 11,
+		naam: 'Zacht bruin broodje gezond',
+		beleg: 'gezond',
+		hardOfZacht: 'zacht',
+		witOfBruin: 'bruin',
+		vega: false
+	},
+	{
+		id: 12,
+		naam: 'Zacht bruin broodje gezond vega',
+		beleg: 'gezond',
+		hardOfZacht: 'zacht',
+		witOfBruin: 'bruin',
+		vega: true
+	},
+	
 ];
 
 /**
