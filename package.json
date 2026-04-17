@@ -11,7 +11,11 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"lint": "prettier --check .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"release": "pnpm version patch && git push --follow-tags",
+		"release:patch": "pnpm version patch && git push --follow-tags",
+		"release:minor": "pnpm version minor && git push --follow-tags",
+		"release:major": "pnpm version major && git push --follow-tags"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^7.0.0",
@@ -34,5 +38,6 @@
 		"@skeletonlabs/skeleton-svelte": "^4.13.0",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"svelte-qrcode": "^1.0.1"
+		
 	}
 }
