@@ -1,6 +1,6 @@
 {
 	"name": "friet-app",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -38,6 +38,5 @@
 		"@skeletonlabs/skeleton-svelte": "^4.13.0",
 		"@sveltejs/adapter-node": "^5.5.4",
 		"svelte-qrcode": "^1.0.1"
-		
 	}
 }
