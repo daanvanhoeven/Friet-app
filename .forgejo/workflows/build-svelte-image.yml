@@ -1,0 +1,36 @@
+name: Build Svelte Image
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: docker-node
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Log in to Codeberg registry
+        uses: docker/login-action@v3
+        with:
+          registry: codeberg.org
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            codeberg.org/hkdigital-private/daans-friet-app:${{ github.ref_name }}
+            codeberg.org/hkdigital-private/daans-friet-app:latest

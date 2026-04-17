@@ -4,7 +4,6 @@ import { findBroodjeById } from '$lib/data/alles.js';
 import { findFrietById } from '$lib/data/alles.js';
 import { findSnackById } from '$lib/data/alles.js';
 
-
 import {
 	getBestellingen,
 	voegBestellingToe,
@@ -30,8 +29,6 @@ export function GET({ url }) {
 
 	return json({ bestellingen });
 }
-
-
 
 export async function POST({ request }) {
 	const data = await request.json();
