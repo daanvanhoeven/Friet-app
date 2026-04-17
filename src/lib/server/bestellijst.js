@@ -26,7 +26,7 @@ export function maakBestellijst(code) {
 }
 
 export function voegBestellingToe({ naam, bestelling, code = 'default' }) {
-	// ❌ BELANGRIJK: code moet bestaan
+
 	if (!bestaatCode(code)) {
 		return { error: 'Code bestaat niet' };
 	}
@@ -41,21 +41,21 @@ export function voegBestellingToe({ naam, bestelling, code = 'default' }) {
 
 	const { friet, snack, broodje } = bestelling;
 
-	// ---- BROODJE ----
+	
 	if (broodje) {
 		const id = getBroodjeId(broodje);
 		if (id === -1) return { error: 'Ongeldig broodje' };
 		broodje.id = id;
 	}
 
-	// ---- FRIET ----
+
 	if (friet) {
 		const id = getFrietId(friet);
 		if (id === -1) return { error: 'Ongeldige friet' };
 		friet.id = id;
 	}
 
-	// ---- SNACK ----
+
 	if (snack) {
 		const id = getSnackId(snack);
 		if (id === -1) return { error: 'Ongeldige snack' };

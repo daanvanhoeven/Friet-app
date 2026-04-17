@@ -46,9 +46,7 @@ export async function POST({ request }) {
 
 	return json({ ok: true });
 }
-/**
- * DELETE
- */
+
 export async function DELETE({ request }) {
 	const data = await request.json();
 

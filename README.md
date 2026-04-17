@@ -67,39 +67,24 @@ npm publish
 =======
 # Friet-app
 Werken met svelte aan een friet-app
+
+
+Dit is de friet-app, op de website kan je friet, snacks en broodjes bestellen, je kan bestellingen aanmaken met codes zodat het prive blijft, je kan dan ook meedoen door een qr code te scannen, 
+
+ Features
+ Samen bestellen in één gedeelde lijst
+ Bestellijsten via unieke codes
+ QR-code om snel mee te doen
+ Bestellen van friet, snacks en broodjes
+ Live overzicht van alle bestellingen
+ Automatische samenvatting van alles wat besteld is
+ Bestellingen kunnen worden verwijderd
+
+  Hoe het werkt
+Maak een nieuwe bestellijst aan
+Deel de code of QR-code met anderen
+Iedereen kan meedoen en zijn/haar bestelling toevoegen
+Alle bestellingen worden live gesynchroniseerd
+Aan het eind zie je een totaaloverzicht
 >>>>>>> 607c184f1d78406c440d9800193751e4731d520b
-
-
-# Observatie
--in  de app kan je nu snacks (kan met saus), friet en een broodje bestellen.
--er is soms verwarring waarom ze niet kunnen bestellen(komt doordat ze geen naam ingevuld hebben)
--soms verwarring met de dropdown dat je iets gekozen hebt(als je op de dropdown klikt en toch iets anders wilt dan moet je er opnieuw op klikken)
--snacklijst onderaan is nogal lang als er veel mensen bestellen(nogal onoverzichtelijk)
-
-
-
-# Wat kan er allemaal beter?
-- bij bijvoorbeeld een broodje frikandel is het alleen mogelijk voor zacht en wit, laat daardoor de optie voor dat broodje de optie voor hard en bruin niet zien.
-- nieuw uiterlijk
-- 
-# onderzoek
--waarom krijgt iedereen de bestelling op de pagina
-
-
-
-# wat kan er mooier
-- laat de snacks en friet etz pas na invullen van de naam zien
-
-# bugs
-
-
--   9 bestellingen klopt niet, wel 9 personen, je wilt hoeveelheid dingen zien als bestellingen
-- je kan alleen een broodje kiezen zonder de opties te doen
-
-
-
-- via endpoint bestelling toevoegen bij nieuwe bestellijst maken zodat je nieuwe bestellijst kan aanmaken zonder dat er iets in zit.
-
-
-
 
