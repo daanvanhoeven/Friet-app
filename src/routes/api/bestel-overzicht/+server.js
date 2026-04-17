@@ -3,10 +3,15 @@ import { json } from '@sveltejs/kit';
 import { findBroodjeById } from '$lib/data/alles.js';
 import { findFrietById } from '$lib/data/alles.js';
 import { findSnackById } from '$lib/data/alles.js';
-import { bestaatCode } from '$lib/server/bestellijst.js';
 
-import { getBestellingen, voegBestellingToe, deleteBestelling } from '$lib/server/bestellijst.js';
-import { bestaatCode, maakBestellijst } from '$lib/server/bestellijst.js';
+
+import {
+	getBestellingen,
+	voegBestellingToe,
+	deleteBestelling,
+	bestaatCode,
+	maakBestellijst
+} from '$lib/server/bestellijst.js';
 /**
  * GET bestellingen per code
  */
@@ -17,7 +22,6 @@ export function GET({ url }) {
 		return json({ bestellingen: [] });
 	}
 
-	
 	if (!bestaatCode(code)) {
 		return json({ error: 'Code bestaat niet' }, { status: 404 });
 	}
@@ -27,7 +31,7 @@ export function GET({ url }) {
 	return json({ bestellingen });
 }
 
-import { bestaatCode, maakBestellijst } from '$lib/server/bestellijst.js';
+
 
 export async function POST({ request }) {
 	const data = await request.json();

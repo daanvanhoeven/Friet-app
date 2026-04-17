@@ -284,6 +284,7 @@
 	}
 </script>
 
+<title> Snackbar bestelsysteem</title>
 <div class="min-h-screen bg-gray-50 pb-10">
 	<div class="mx-auto flex max-w-5xl items-center justify-between p-4">
 		<button
