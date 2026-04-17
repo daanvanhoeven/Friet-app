@@ -1,90 +1,31 @@
-<<<<<<< HEAD
-# Svelte library
+# 🍟 Friet-app
 
-Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
+Een SvelteKit applicatie waarmee je samen eten kunt bestellen zoals friet, snacks en broodjes via een gedeelde bestellijst.
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+##  Wat is dit?
 
-## Creating a project
+De Friet-app maakt het mogelijk om samen in één bestellijst te bestellen. Iedereen kan via een code of QR-code deelnemen aan dezelfde bestelling.
 
-If you're seeing this, you've probably already done this step. Congrats!
+##  Features
 
-```sh
-# create a new project in the current directory
-npx sv create
+- Samen bestellen in één gedeelde lijst
+- Bestellijsten via unieke codes
+- QR-code om snel mee te doen
+- Bestellen van friet, snacks en broodjes
+- Live overzicht van alle bestellingen (auto refresh)
+- Automatische samenvatting van alles wat besteld is
+- Bestellingen kunnen worden verwijderd
 
-# create a new project in my-app
-npx sv create my-app
-```
+##  Hoe werkt het?
 
-To recreate this project with the same configuration:
+1. Maak een nieuwe bestellijst aan (met code)
+2. Deel de code of QR-code met anderen
+3. Iedereen kan meedoen en zijn/haar bestelling toevoegen
+4. Alle bestellingen worden live gesynchroniseerd
+5. Je ziet direct een totaaloverzicht van alle bestellingen
 
-```sh
-# recreate this project
-npx sv@0.12.5 create --template library --types jsdoc --add prettier tailwindcss="plugins:typography,forms" --install npm Friet-app
-```
+##  Development
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
-
-```sh
-npm pack
-```
-
-To create a production version of your showcase app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```sh
-npm publish
-```
-=======
-# Friet-app
-Werken met svelte aan een friet-app
-
-
-Dit is de friet-app, op de website kan je friet, snacks en broodjes bestellen, je kan bestellingen aanmaken met codes zodat het prive blijft, je kan dan ook meedoen door een qr code te scannen, 
-
- Features
- Samen bestellen in één gedeelde lijst
- Bestellijsten via unieke codes
- QR-code om snel mee te doen
- Bestellen van friet, snacks en broodjes
- Live overzicht van alle bestellingen
- Automatische samenvatting van alles wat besteld is
- Bestellingen kunnen worden verwijderd
-
-  Hoe het werkt
-Maak een nieuwe bestellijst aan
-Deel de code of QR-code met anderen
-Iedereen kan meedoen en zijn/haar bestelling toevoegen
-Alle bestellingen worden live gesynchroniseerd
-Aan het eind zie je een totaaloverzicht
->>>>>>> 607c184f1d78406c440d9800193751e4731d520b
-
+Installeren:
+```bash
+npm install
